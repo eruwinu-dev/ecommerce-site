@@ -5,11 +5,11 @@ import React from "react"
 
 type Props = {}
 
-const Landing = ({}: Props) => {
+const Auth = ({}: Props) => {
 	return (
 		<>
 			<Head>
-				<title>SellerStop</title>
+				<title>Sign In | SellerStop</title>
 			</Head>
 			<section></section>
 		</>
@@ -33,5 +33,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 		},
 	}
 }
-export default Landing
+
+export default Auth
 
