@@ -1,14 +1,7 @@
-export type RoleType = "USER" | "ADMIN" | null
-
-export interface UserType {
-	id: string
-	name: string
-	email: string
-	role: RoleType
-}
+import { User } from "@prisma/client"
 
 export interface UserContextType {
-	user: UserType | null
+	user: User | null
 	setUser: Dispatch<SetStateAction<UserType | null>>
 }
 

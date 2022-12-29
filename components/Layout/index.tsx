@@ -1,4 +1,6 @@
 import React, { ReactNode } from "react"
+import { AdminProvider } from "../../context/AdminState"
+import { ShopProvider } from "../../context/ShopState"
 import { UserProvider } from "../../context/UserState"
 import Header from "../Header"
 
@@ -9,8 +11,12 @@ type Props = {
 const Layout = ({ children }: Props) => {
 	return (
 		<UserProvider>
-			<Header />
-			<main>{children}</main>
+			<AdminProvider>
+				<ShopProvider>
+					<Header />
+					<main>{children}</main>
+				</ShopProvider>
+			</AdminProvider>
 		</UserProvider>
 	)
 }

@@ -14,7 +14,9 @@ const Header = (props: Props) => {
 			<nav>
 				<div></div>
 				<div>
-					<Link href="/">SellerStop</Link>
+					<Link href="/" className="text-lg font-semibold font-mono italic">
+						SellerStop
+					</Link>
 				</div>
 				<div>
 					{["/auth"].includes(pathname) ? null : user ? (

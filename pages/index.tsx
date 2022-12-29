@@ -11,7 +11,13 @@ const Landing = ({}: Props) => {
 			<Head>
 				<title>SellerStop</title>
 			</Head>
-			<section></section>
+			<section className="grid grid-cols-2 grid-flow-row">
+				<div className="flex flex-col items-start justify-center p-8 space-y-6">
+					<h1 className="text-left">Shop from your phone, receive at your home.</h1>
+					<p>Buy items from the SellerStop platform!</p>
+				</div>
+				<div></div>
+			</section>
 		</>
 	)
 }

@@ -10,18 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Item {
-  id          String  @id @default(auto()) @map("_id") @db.ObjectId
-  name        String
-  description String
-  published   Boolean @default(false)
-  price       Float   @default(1.0)
-  quantity    Int     @default(1)
-
-  User   User?   @relation(fields: [userId], references: [id])
-  userId String? @db.ObjectId
-}
-
 model Account {
   id                 String  @id @default(auto()) @map("_id") @db.ObjectId
   userId             String  @map("user_id") @db.ObjectId
@@ -63,7 +51,6 @@ model User {
   accounts      Account[]
   sessions      Session[]
   Item          Item[]
-  Cart          Cart[]
   Order         Order[]
 }
 
@@ -76,23 +63,38 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-model Cart {
-  id     String     @id @default(auto()) @map("_id") @db.ObjectId
-  user   User       @relation(fields: [userId], references: [id])
-  userId String     @db.ObjectId
-  items  CartItem[]
+model Item {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String
+  published   Boolean  @default(false)
+  price       Float    @default(1.0)
+  quantity    Int      @default(1)
+  images      String[]
+
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String? @db.ObjectId
+  order  Order[]
 }
 
 model Order {
-  id        String     @id @default(auto()) @map("_id") @db.ObjectId
-  user      User       @relation(fields: [userId], references: [id])
-  userId    String     @map("user_id") @db.ObjectId
-  createdAt DateTime   @default(now()) @map(name: "created_at")
-  items     CartItem[]
-  status    Status
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @default(now()) @map(name: "updated_at")
+  item      Item     @relation(fields: [itemId], references: [id])
+  itemId    String   @db.ObjectId
+
+  quantity Int
+  User     User?   @relation(fields: [userId], references: [id])
+  userId   String? @db.ObjectId
+
+  status  Status @default(CART)
+  groupId String
 }
 
 enum Status {
+  CART
   PAYMENT
   VALIDATION
   SHIPMENT
@@ -102,9 +104,4 @@ enum Status {
 enum Role {
   USER
   ADMIN
-}
-
-type CartItem {
-  itemId   String @map("item_id") @db.ObjectId
-  quantity Int    @default(1)
 }

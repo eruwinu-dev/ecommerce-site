@@ -1,8 +1,8 @@
 import NextAuth, { AuthOptions } from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
-import prisma from "../../../prisma/prisma"
 import { NextApiHandler } from "next"
+import prisma from "../../../prisma/prisma"
 
 const authHandler: NextApiHandler = (req, res) => NextAuth(req, res, options)
 export default authHandler
@@ -19,11 +19,6 @@ const options: AuthOptions = {
 	events: {
 		signIn: async (message) => {
 			if (message.isNewUser) {
-				await prisma.cart.create({
-					data: {
-						userId: message.user.id,
-					},
-				})
 			}
 		},
 	},

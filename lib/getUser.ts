@@ -2,7 +2,6 @@ import { GetServerSidePropsContext } from "next"
 import { getSession } from "next-auth/react"
 
 import prisma from "../prisma/prisma"
-import { UserType } from "../types/user"
 
 const getUser = async (context: GetServerSidePropsContext) => {
 	const session = await getSession(context)
@@ -10,15 +9,11 @@ const getUser = async (context: GetServerSidePropsContext) => {
 
 	const email = session.user.email || ""
 
-	const userDetails = await prisma.user.findUnique({
+	const user = await prisma.user.findUnique({
 		where: { email },
 	})
 
-	if (!userDetails) return null
-
-	const { createdAt, updatedAt, emailVerified, ...user } = userDetails
-
-	return user as UserType
+	return user
 }
 
 export default getUser

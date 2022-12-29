@@ -4,11 +4,13 @@ import React, { Fragment, MouseEvent } from "react"
 import { signOut } from "next-auth/react"
 import useUserContext from "../../../context/UserState"
 import Link from "next/link"
+import useShopContext from "../../../context/ShopState"
 
 type Props = {}
 
 const HeaderDropdown = (props: Props) => {
 	const { user } = useUserContext()
+	const { cart } = useShopContext()
 
 	const signOutHandler = async (event: MouseEvent<HTMLButtonElement>) => {
 		await signOut()
@@ -50,7 +52,7 @@ const HeaderDropdown = (props: Props) => {
 											active ? "dropdown-menu-item-hover" : "",
 										].join(" ")}
 									>
-										Cart
+										{`Cart (${cart.length})`}
 									</Link>
 								)}
 							</Menu.Item>

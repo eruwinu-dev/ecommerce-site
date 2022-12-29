@@ -1,5 +1,6 @@
+import { User } from "@prisma/client"
 import React, { createContext, ReactNode, useContext, useState } from "react"
-import { UserContextType, UserType } from "../types/user"
+import { UserContextType } from "../types/user"
 
 type Props = {
 	children: ReactNode
@@ -8,7 +9,7 @@ type Props = {
 const UserContext = createContext<UserContextType | null>(null)
 
 export const UserProvider = ({ children }: Props) => {
-	const [user, setUser] = useState<UserType | null>(null)
+	const [user, setUser] = useState<User | null>(null)
 
 	const value: UserContextType = {
 		user,
