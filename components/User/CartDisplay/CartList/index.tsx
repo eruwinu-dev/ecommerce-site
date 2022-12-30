@@ -19,7 +19,7 @@ const CartList = (props: Props) => {
 			<thead>
 				<tr className="flex">
 					<th className="flex-[0.5]"></th>
-					<th className="flex-[3]">Name</th>
+					<th className="flex-[2]">Name</th>
 					<th className="flex-1">Price</th>
 					<th className="flex-1">Quantity</th>
 					<th className="flex-1">Total Price</th>

@@ -5,9 +5,9 @@ type Props = {}
 
 const UserDashboard = (props: Props) => {
 	return (
-		<div>
+		<>
 			<ItemsGrid />
-		</div>
+		</>
 	)
 }
 

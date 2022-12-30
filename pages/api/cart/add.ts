@@ -5,18 +5,18 @@ import { Order } from "@prisma/client"
 
 type Data = {
 	order: Order
-	message: string
+	newItem: boolean
 }
 
 const handler = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
 	const { itemId, quantity, userId } = req.body
-	const cartItem = await prisma.order.findFirst({
+	const cart = await prisma.order.findMany({
 		where: {
 			userId,
 			status: "CART",
 		},
 	})
-	if (!cartItem) {
+	if (!cart.length) {
 		const order = await prisma.order.create({
 			data: {
 				itemId,
@@ -26,16 +26,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
 				groupId: crypto.randomUUID(),
 			},
 		})
-		res.status(200).json({ order, message: "Added new item" })
+		res.status(200).json({ order, newItem: true })
 	} else {
-		if (cartItem.status === "CART" && cartItem.itemId === itemId) {
+		const cartItem = cart.find((order) => order.itemId === itemId && order.status === "CART")
+		if (cartItem) {
 			const order = await prisma.order.update({
 				where: { id: cartItem.id },
 				data: {
 					quantity: cartItem.quantity + quantity,
 				},
 			})
-			res.status(200).json({ order, message: "Added more quantity to item" })
+			res.status(200).json({ order, newItem: false })
 		} else {
 			const order = await prisma.order.create({
 				data: {
@@ -43,10 +44,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
 					quantity,
 					userId,
 					status: "CART",
-					groupId: cartItem.groupId,
+					groupId: cart[0].groupId,
 				},
 			})
-			res.status(200).json({ order, message: "Has cart, but not the item" })
+			res.status(200).json({ order, newItem: true })
 		}
 	}
 }

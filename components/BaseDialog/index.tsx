@@ -27,7 +27,7 @@ const BaseDialog = ({ isOpen, onClose, title, children, closeOnBlur = true, size
 				</Transition.Child>
 
 				<div className="fixed inset-0 overflow-y-auto">
-					<div className="flex min-h-full items-center justify-center p-4 text-center">
+					<div className="flex min-h-full items-center justify-center px-4 pt-4 pb-2 text-center">
 						<Transition.Child
 							as={Fragment}
 							enter="ease-out duration-300"
@@ -40,7 +40,7 @@ const BaseDialog = ({ isOpen, onClose, title, children, closeOnBlur = true, size
 							<Dialog.Panel
 								className={[
 									size,
-									"w-full  transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all",
+									"w-full  transform overflow-hidden rounded-2xl bg-white px-6 pt-6 pb-2 text-left align-middle shadow-xl transition-all",
 								].join(" ")}
 							>
 								<Dialog.Title as="div" className="w-full relative">

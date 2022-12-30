@@ -3,6 +3,8 @@ import { GetServerSideProps } from "next"
 import Head from "next/head"
 import React, { useEffect, useRef } from "react"
 import CartDisplay from "../components/User/CartDisplay"
+import DeleteCartItemDialog from "../components/User/DeleteCartItemDialog"
+import UpdateCartItemDialog from "../components/User/UpdateCartItemDialog"
 import useShopContext from "../context/ShopState"
 import useUserContext from "../context/UserState"
 import getCart from "../lib/getCart"
@@ -37,6 +39,8 @@ const Cart = ({ user, cart }: Props) => {
 			</Head>
 			<section>
 				<CartDisplay />
+				<UpdateCartItemDialog />
+				<DeleteCartItemDialog />
 			</section>
 		</>
 	)
