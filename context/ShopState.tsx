@@ -35,8 +35,8 @@ export const ShopProvider = ({ children }: Props) => {
 			item: Item
 		})[]
 	>([])
-	const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null)
-	const [selectedCartItemId, setSelectedCartItemId] = useState<string | null>(null)
+	const [selectedOrderIds, setSelectedOrderIds] = useState<string[]>([])
+	const [selectedCartItemIds, setSelectedCartItemIds] = useState<string[]>([])
 	const [shopAction, setShopAction] = useState<ShopAction>(initialShopAction)
 	const [shopDialog, setShopDialog] = useState<ShopDialog>(initialShopDialog)
 
@@ -99,18 +99,18 @@ export const ShopProvider = ({ children }: Props) => {
 		return completed
 	}
 
-	const deleteItemInCart = async (orderId: string) => {
+	const deleteItemInCart = async (orderIds: string[]) => {
 		let completed: boolean = false
 		toggleShopAction("deleteCartItem", "LOADING")
 		try {
 			const result = await fetch("/api/cart/delete", {
 				method: "DELETE",
 				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ orderId }),
+				body: JSON.stringify({ orderIds }),
 			})
 			const { deleted } = await result.json()
 			completed = deleted
-			const newCart = cart.filter((order) => order.id !== orderId)
+			const newCart = cart.filter((order) => !orderIds.includes(order.id))
 			setCart(newCart)
 		} finally {
 			if (!completed) return
@@ -119,9 +119,9 @@ export const ShopProvider = ({ children }: Props) => {
 		return completed
 	}
 
-	const selectOrder = (orderId: string | null) => setSelectedOrderId(orderId)
+	const selectOrders = (orderIds: string[]) => setSelectedOrderIds(orderIds)
 
-	const selectCartItem = (orderId: string | null) => setSelectedCartItemId(orderId)
+	const selectCartItems = (orderIds: string[]) => setSelectedCartItemIds(orderIds)
 
 	const findItem = (itemId: string) => items.find((item) => item.id === itemId)
 
@@ -150,10 +150,10 @@ export const ShopProvider = ({ children }: Props) => {
 		cart,
 		getCart,
 		getOrders,
-		selectedOrderId,
-		selectOrder,
-		selectedCartItemId,
-		selectCartItem,
+		selectedOrderIds,
+		selectOrders,
+		selectedCartItemIds,
+		selectCartItems,
 		addItemToCart,
 		changeItemInCart,
 		deleteItemInCart,

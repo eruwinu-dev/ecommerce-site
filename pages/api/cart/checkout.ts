@@ -2,19 +2,22 @@ import prisma from "../../../prisma/prisma"
 import type { NextApiRequest, NextApiResponse } from "next"
 
 type Data = {
-	deleted: boolean
+	updated: boolean
 }
 
 const handler = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
-	const { orderIds } = req.body
-	const orders = await prisma.order.deleteMany({
+	const { orderIds, status } = req.body
+	const ordersForValidation = await prisma.order.updateMany({
 		where: {
 			id: {
 				in: orderIds,
 			},
 		},
+		data: {
+			status,
+		},
 	})
-	res.status(200).json({ deleted: Boolean(orders) })
+	res.status(200).json({ updated: Boolean(ordersForValidation) })
 }
 
 export default handler

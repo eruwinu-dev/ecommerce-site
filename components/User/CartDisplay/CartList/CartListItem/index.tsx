@@ -1,6 +1,6 @@
 import { Item, Order } from "@prisma/client"
 import Link from "next/link"
-import React, { MouseEvent } from "react"
+import React, { ChangeEvent, MouseEvent } from "react"
 import useShopContext from "../../../../../context/ShopState"
 import { ShopDialog } from "../../../../../types/shop"
 import CloudinaryImage from "../../../../CloudinaryImage"
@@ -12,16 +12,28 @@ type Props = {
 }
 
 const CartListItem = ({ order }: Props) => {
-	const { toggleShopDialog, selectCartItem } = useShopContext()
+	const { toggleShopDialog, selectCartItems, selectedCartItemIds, shopDialog } = useShopContext()
 
 	const openShopDialogHandler = (dialogKey: keyof ShopDialog) => (event: MouseEvent<HTMLButtonElement>) => {
-		selectCartItem(order.id)
+		selectCartItems([order.id])
 		toggleShopDialog(dialogKey)
 	}
 
+	const toggleSelectCartItemHandler = (event: ChangeEvent<HTMLInputElement>) => {
+		if (selectedCartItemIds.includes(order.id))
+			selectCartItems(selectedCartItemIds.filter((itemId) => itemId !== order.id))
+		else selectCartItems([...selectedCartItemIds, order.id])
+	}
+
 	return (
-		<tr className="flex p-2">
-			<td className="flex-[0.5]"></td>
+		<tr className="flex p-4">
+			<td className="flex-[0.25] inline-flex items-center justify-center">
+				<input
+					type="checkbox"
+					checked={selectedCartItemIds.includes(order.id)}
+					onChange={toggleSelectCartItemHandler}
+				/>
+			</td>
 			<td className="flex-[2]">
 				<Link href={`../item/${order.itemId}`} className="grid grid-cols-4 grid-flow-row">
 					<div>
@@ -52,7 +64,7 @@ const CartListItem = ({ order }: Props) => {
 			<td className="flex-1 inline-flex items-center justify-center space-x-2">
 				{order.item ? order.item.price * order.quantity : 0}
 			</td>
-			<td className="flex-1 flex flex-col items-center justify-center">
+			<td className="flex-1 inline-flex items-center justify-end">
 				<button
 					type="button"
 					className="border-red-500 text-red-500"

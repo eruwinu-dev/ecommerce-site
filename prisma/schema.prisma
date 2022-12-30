@@ -95,8 +95,8 @@ model Order {
 
 enum Status {
   CART
-  PAYMENT
   VALIDATION
+  APPROVAL
   SHIPMENT
   DELIVERED
 }

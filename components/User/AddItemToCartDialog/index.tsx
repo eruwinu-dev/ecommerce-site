@@ -15,7 +15,7 @@ const AddItemToCartDialog = (props: Props) => {
 
 	const toggleAddItemToCartDialogHandler = () => {
 		toggleShopDialog("addItemToCart")
-		setTimeout(() => toggleShopAction("addItemToCart", "IDLE"), 150)
+		setTimeout(() => toggleShopAction("addItemToCart", "IDLE"), 500)
 	}
 
 	return (

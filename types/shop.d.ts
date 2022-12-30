@@ -32,13 +32,13 @@ export interface ShopContextType {
 			item: Item
 		})[]
 	) => void
-	selectedOrderId: string | null
-	selectOrder: (orderId: string | null) => void
-	selectedCartItemId: string | null
-	selectCartItem: (orderId: string | null) => void
+	selectedOrderIds: string[]
+	selectOrders: (orderIds: string[]) => void
+	selectedCartItemIds: string[]
+	selectCartItems: (orderIds: string[]) => void
 	addItemToCart: (itemId: string, quantity: number, userId: string) => Promise<boolean | undefined>
 	changeItemInCart: (orderId: string, quantity: number) => Promise<boolean | undefined>
-	deleteItemInCart: (orderId: string) => Promise<boolean | undefined>
+	deleteItemInCart: (orderIds: string[]) => Promise<boolean | undefined>
 	findItem: (itemId: string) => Item | undefined
 	findOrder: (orderId: string) =>
 		| (Order & {

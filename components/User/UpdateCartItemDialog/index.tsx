@@ -12,23 +12,25 @@ const UpdateCartItemDialog = (props: Props) => {
 		toggleShopDialog,
 		shopAction: { updateCartItem: updateCartItemAction },
 		toggleShopAction,
-		selectedCartItemId,
+		selectedCartItemIds,
 		findCartItem,
+		selectCartItems,
 		changeItemInCart,
 	} = useShopContext()
 
 	const [quantity, setQuantity] = useState<number>(0)
 
-	const selectedCartItem = selectedCartItemId ? findCartItem(selectedCartItemId) : undefined
+	const selectedCartItem = selectedCartItemIds.length ? findCartItem(selectedCartItemIds[0]) : undefined
 
 	const updateCartItemHandler = async (event: MouseEvent) => {
-		if (!selectedCartItemId) return
-		await changeItemInCart(selectedCartItemId, quantity)
+		if (!selectedCartItemIds.length) return
+		await changeItemInCart(selectedCartItemIds[0], quantity)
 	}
 
 	const toggleUpdateCartItemDialogHandler = () => {
 		toggleShopDialog("updateCartItem")
-		setTimeout(() => toggleShopAction("updateCartItem", "IDLE"), 150)
+		selectCartItems([])
+		setTimeout(() => toggleShopAction("updateCartItem", "IDLE"), 500)
 	}
 
 	useEffect(() => {
@@ -36,8 +38,6 @@ const UpdateCartItemDialog = (props: Props) => {
 		setQuantity(selectedCartItem.quantity)
 		return () => {}
 	}, [selectedCartItem])
-
-	if (!selectedCartItem) return <></>
 
 	return (
 		<BaseDialog
@@ -47,11 +47,13 @@ const UpdateCartItemDialog = (props: Props) => {
 		>
 			{updateCartItemAction === "IDLE" ? (
 				<div className="w-full flex flex-col items-center justify-center">
-					<ItemQuantityForm
-						quantity={quantity}
-						setQuantity={setQuantity}
-						upperLimit={selectedCartItem.item.quantity}
-					/>
+					{selectedCartItem ? (
+						<ItemQuantityForm
+							quantity={quantity}
+							setQuantity={setQuantity}
+							upperLimit={selectedCartItem.item.quantity}
+						/>
+					) : null}
 					<div className="w-full mt-2 inline-flex items-center justify-end space-x-2">
 						<button type="button" onClick={updateCartItemHandler} className="border-blue-500 text-blue-500">
 							Update
